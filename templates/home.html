@@ -34,27 +34,35 @@
 <!--
     <div class="ui grid" style="background: url({{ url_for('static', filename='img/NZ.jpg') }}); background-size: contain; background-repeat: no-repeat; background-position: center;">
 -->
+    <div class="ui centered grid">
 
-      <div class="ui text container">
-        <p><h1 class="ui dividing header">Welcome</h1></p>
-        <br>
-        <h3 class="first">{{ text }}</h3>
+      <div class="row">
+        <div class="column">
+          <img class="ui centered huge rounded image" src="{{ url_for('static', filename='img/NZ.jpg') }}">
+        </div>
       </div>
-      <br>
-      <div class="ui text container">
-        <ul>
-          {% for component in site_components %}
-          <li>
-            {{ component }}
-          </li>
-          {% endfor %}
-        </ul>
+      <div class="row">
+        <div class="column">
+          <p><h1 class="ui center aligned header">Welcome</h1></p>
+        </div>
       </div>
-      <div class="ui content container">
-        <h3><i class="ca flag"></i></h3>
-        <h3><i class="gb uk flag"></i></h3>
+
+      <div class="row">
+          <div class="ui text container">
+            <h3 class="first">{{ text }}</h3>
+          </div>
       </div>
+
+      <div class="row">
+        <a href="https://github.com/canadarmy" target="_blank">
+          <div class="ui content container">
+            <i class="github big link icon"></i>
+          </div>
+        </a>
+      </div>
+
     </div>
+  </div>
 <!--
   </div>
 -->
