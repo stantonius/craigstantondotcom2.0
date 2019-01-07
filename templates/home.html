@@ -28,27 +28,35 @@
       <div class="item">Register</div>
   </div>
   <br>
+
   <br>
   <div class="ui container">
-    <div class="ui text container" style="">
-      <p><h1 class="ui dividing header">Welcome</h1></p>
+<!--
+    <div class="ui grid" style="background: url({{ url_for('static', filename='img/NZ.jpg') }}); background-size: contain; background-repeat: no-repeat; background-position: center;">
+-->
+
+      <div class="ui text container">
+        <p><h1 class="ui dividing header">Welcome</h1></p>
+        <br>
+        <h3 class="first">{{ text }}</h3>
+      </div>
       <br>
-      <h3 class="first">{{ text }}</h3>
+      <div class="ui text container">
+        <ul>
+          {% for component in site_components %}
+          <li>
+            {{ component }}
+          </li>
+          {% endfor %}
+        </ul>
+      </div>
+      <div class="ui content container">
+        <h3><i class="ca flag"></i></h3>
+        <h3><i class="gb uk flag"></i></h3>
+      </div>
     </div>
-    <br>
-    <div class="ui text container">
-      <ul>
-        {% for component in site_components %}
-        <li>
-          {{ component }}
-        </li>
-        {% endfor %}
-      </ul>
-    </div>
-    <ui class="content container">
-      <h3><i class="ca flag"></i></h3>
-      <h3><i class="gb uk flag"></i></h3>
-    </ui>
+<!--
   </div>
+-->
 </body>
 </html>
