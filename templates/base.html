@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>Craig Stanton</title>
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename = 'semantic/dist/semantic.min.css') }}">
+  <script src="https://code.jquery.com/jquery-3.1.1.min.js"
+  integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
+  crossorigin="anonymous"></script>
+  <script type = "text/javascript" src="{{ url_for('static', filename = 'semantic/dist/semantic.min.js') }}"></script>
+</head>
+
+<body>
+  <div class="ui fixed menu">
+    {% for component in site_components %}
+    <div class="active item">
+      <a href="{{ url_for(component.lower()) }}">{{ component }}</a>
+    </div>
+    {% endfor %}
+    <div class="ui right menu"></div>
+      <div class="ui transparent left icon input">
+        <input type="text" placeholder="Search" />
+        <i class="search icon"></i>
+      </div>
+      <div class="item">Login</div>
+      <div class="item">Register</div>
+  </div>
+  <br>
+
+  {% block page_content %}
+  {% endblock %}
+
+</body>
+</html>
