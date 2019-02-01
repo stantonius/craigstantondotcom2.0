@@ -1,6 +1,15 @@
 from flask import Flask, render_template
+from flask_sqlalchemy import SQLAlchemy
+from flask_migrate import Migrate
+import os
+from config import Config
 
 app = Flask(__name__)
+
+app.config.from_object(Config)
+db = SQLAlchemy(app)
+
+migrate = Migrate(app, db)
 
 # General variables to be used across all pages
 site_components = ['Home', 'Blog', 'About']
