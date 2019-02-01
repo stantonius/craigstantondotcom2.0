@@ -6,7 +6,7 @@ class Config(object):
     TESTING = False
     CSRF_ENABLED = True
     SECRET_KEY = 'this-really-needs-to-be-changed'
-    
+    SQLALCHEMY_DATABASE_URI = 'postgresql://Craig:Spurs2018!@localhost/craigstanton2.0'
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 
 
