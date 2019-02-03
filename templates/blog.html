@@ -26,6 +26,24 @@
           </div>
       </div>
 
+      <div class="ui text container">
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+        <ul>
+            {% for message in messages %}
+            <li>{{ message }}</li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+        {% endwith %}
+      </div>
+
+      <div class="ui text container">
+        {% for post in posts %}
+        <h3 class="first">{{ post.title }}</h3>
+        {% endfor %}
+      </div>
+
       <div class="row">
         <div class="ui content container">
           <a href="https://github.com/canadarmy" target="_blank">
