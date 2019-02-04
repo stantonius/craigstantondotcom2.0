@@ -7,7 +7,7 @@ from flask_blogging import BloggingEngine, SQLAStorage
 from models import Post, Tags, Admin
 from forms import PostEdit, LoginForm
 from start import app, db
-from flask_login import login_user, login_required, current_user
+from flask_login import login_user, login_required, current_user, logout_user
 from flask import request
 from werkzeug.urls import url_parse
 
