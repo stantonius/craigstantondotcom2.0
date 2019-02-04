@@ -11,22 +11,6 @@ from flask_login import login_user, login_required, current_user, logout_user
 from flask import request
 from werkzeug.urls import url_parse
 
-"""
-app = Flask(__name__)
-
-app.config.from_object(Config)
-#app.config['FLASK_ADMIN_SWATCH'] = 'cerulean'
-
-db.init_app(app)
-engine = db.get_engine()
-tables = db.get_tables_for_bind()
-db.make_connector()
-
-migrate = Migrate(app, db)
-
-# code for the blogging app
-#storage = SQLAStorage(db)
-"""
 
 
 # General variables to be used across all pages
