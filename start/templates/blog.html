@@ -1,0 +1,89 @@
+{% extends "base.html" %}
+
+{% block page_content %}
+
+  <br>
+  <div class="ui container">
+<!--
+    <div class="ui grid" style="background: url({{ url_for('static', filename='img/NZ.jpg') }}); background-size: contain; background-repeat: no-repeat; background-position: center;">
+-->
+    <div class="ui centered grid">
+
+      <div class="row">
+        <div class="column">
+          <img class="ui centered huge rounded image" src="{{ url_for('static', filename='img/NZ.jpg') }}">
+        </div>
+      </div>
+      <div class="row">
+        <div class="column">
+          <p><h1 class="ui center aligned header">Blog Posts</h1></p>
+        </div>
+      </div>
+      <div class="row">
+          <h3 class="first" style="font-style: italic">{{ text }}</h3>
+      </div>
+
+
+      <div class="row">
+        <div class="ui centered grid">
+          <div class="ui text container">
+            {% with messages = get_flashed_messages() %}
+            {% if messages %}
+            <ul>
+                {% for message in messages %}
+                <li>{{ message }}</li>
+                {% endfor %}
+            </ul>
+            {% endif %}
+            {% endwith %}
+          </div>
+        </div>
+      </div>
+
+      <div class="ui grid">
+        {% for post in posts %}
+          <div class="row">
+            <h3 class="ui header">{{ post.title }}</h3>
+          </div>
+          <div class="row">
+            <div class="four wide column" style="font-style: italic">{{ post.subtitle }}</div>
+            <div class="four wide column"></div>
+            <div class="four wide column" style="font-style: italic">{{ post.author }}</div>
+            <div class="four wide column" style="font-style: italic">{{ post.date_posted.strftime('%Y-%m-%d') }}</div>
+          </div>
+          <div class="row"></div>
+          <div class="row">
+            <div class="ui centered grid">
+              <div class="ui text container">
+                {{ post.content }}
+              </div>
+            </div>
+          </div>
+          <div class="ui section divider"></div>
+        {% endfor %}
+      </div>
+
+
+
+
+
+
+
+      <div class="row">
+        <div class="ui content container">
+          <a href="https://github.com/canadarmy" target="_blank">
+            <i class="github big link black icon"></i>
+          </a>
+          <a href="https://www.linkedin.com/in/craig-stanton-a5132a42/" target="_blank">
+            <i class="linkedin big link black icon"></i>
+          </a>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+<!--
+  </div>
+-->
+{% endblock %}

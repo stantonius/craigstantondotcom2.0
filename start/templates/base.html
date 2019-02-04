@@ -24,7 +24,11 @@
         <input type="text" placeholder="Search" />
         <i class="search icon"></i>
       </div>
-      <div class="item">Login</div>
+      {% if current_user.is_anonymous %}
+        <a href="{{ url_for('login') }}" class="item">Login</a>
+        {% else %}
+        <a href="{{ url_for('logout') }}" class="item">Logout</a>
+        {% endif %}
       <div class="item">Register</div>
   </div>
   <br>

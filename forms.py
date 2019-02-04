@@ -11,3 +11,9 @@ class PostEdit(FlaskForm):
     content = TextAreaField('Post content', validators=[DataRequired()])
     save_draft = BooleanField('Save as draft')
     submit = SubmitField('Post')
+
+class LoginForm(FlaskForm):
+    username = StringField('Username', validators=[DataRequired()])
+    password = PasswordField('Password', validators=[DataRequired()])
+    remember_me = BooleanField('Remember Me')
+    submit = SubmitField('Sign In')
