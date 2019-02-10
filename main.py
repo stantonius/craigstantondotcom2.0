@@ -11,7 +11,7 @@ from flask_login import login_user, login_required, current_user, logout_user
 from flask import request
 from werkzeug.urls import url_parse
 
-
+#from general_functions.datastore import store_time, fetch_times
 
 # General variables to be used across all pages
 site_components = ['Home', 'Blog', 'About']
@@ -19,6 +19,11 @@ site_components = ['Home', 'Blog', 'About']
 @app.route('/')
 def home():
     text = 'The home page will contain initiatives, links to the blog, coding progress, etc.'
+    
+    #below code is just to connect to datastore as POC
+    #store_time(datetime.datetime.now())
+    #times = fetch_times(10)
+
     return render_template('home.html', text = text, site_components = site_components)
 
 @app.route('/blog/')
