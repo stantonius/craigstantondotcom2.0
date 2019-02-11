@@ -25,7 +25,9 @@
             <h3 class="first">{{ text }}</h3>
           </div>
       </div>
-
+        {% for time in times %}
+          <p>{{ time['timestamp'] }}</p>
+        {% endfor %}
       <div class="row">
         <div class="ui content container">
           <a href="https://github.com/canadarmy" target="_blank">

@@ -1,17 +1,17 @@
 from flask import Flask, render_template, flash, redirect, url_for
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
-import os
+import os, datetime
 from config import Config
 from flask_blogging import BloggingEngine, SQLAStorage
 from models import Post, Tags, Admin
 from forms import PostEdit, LoginForm
-from start import app, db
+from mysite import app, db
 from flask_login import login_user, login_required, current_user, logout_user
 from flask import request
 from werkzeug.urls import url_parse
 
-#from general_functions.datastore import store_time, fetch_times
+from general_functions.datastore.datastore import store_time, fetch_times
 
 # General variables to be used across all pages
 site_components = ['Home', 'Blog', 'About']
@@ -21,10 +21,10 @@ def home():
     text = 'The home page will contain initiatives, links to the blog, coding progress, etc.'
     
     #below code is just to connect to datastore as POC
-    #store_time(datetime.datetime.now())
-    #times = fetch_times(10)
+    store_time(datetime.datetime.now())
+    times = fetch_times(10)
 
-    return render_template('home.html', text = text, site_components = site_components)
+    return render_template('home.html', text = text, site_components = site_components, times=times)
 
 @app.route('/blog/')
 def blog():
@@ -68,7 +68,7 @@ def admin_page():
             title=form.post_title.data,
             subtitle=form.post_subtitle.data,
             author=form.author.data,
-            #post_tags="Need to fix",
+            post_tags=form.tags,
             content=form.content.data)
         db.session.add(post)
         db.session.commit()

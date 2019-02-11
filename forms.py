@@ -7,7 +7,7 @@ class PostEdit(FlaskForm):
     post_title = StringField('Title', validators=[DataRequired()])
     post_subtitle = StringField('Subtitle', validators=[DataRequired()])
     author = StringField('Author', validators=[DataRequired()])
-    #tags = QuerySelectMultipleField('Tags')
+    tags = QuerySelectMultipleField('Tags')
     content = TextAreaField('Post content', validators=[DataRequired()])
     save_draft = BooleanField('Save as draft')
     submit = SubmitField('Post')

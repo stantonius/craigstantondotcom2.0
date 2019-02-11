@@ -43,6 +43,16 @@
             <span style="color: red;">[{{ error }}]
             {% endfor %}
         </p>
+
+        <p>
+          {{ form.post_tags }}<br>
+          {{ form.content(size=32) }}
+          {% for error in form.content.errors %}
+          <span style="color: red;">[{{ error }}]
+          {% endfor %}
+      </p>
+
+
         <p>{{ form.save_draft() }} {{ form.save_draft.label }}</p>
         <p>{{ form.submit() }}</p>
       </form>
