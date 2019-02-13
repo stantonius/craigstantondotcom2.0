@@ -1,17 +1,16 @@
-from flask import Flask, render_template, flash, redirect, url_for
+from flask import Flask, render_template, flash, redirect, url_for, request
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 import os, datetime
 from config import Config
 from flask_blogging import BloggingEngine, SQLAStorage
-from models import Post, Tags, Admin
+#from models import Post, Tags, Admin
 from forms import PostEdit, LoginForm
 from mysite import app, db
 from flask_login import login_user, login_required, current_user, logout_user
-from flask import request
 from werkzeug.urls import url_parse
 
-from general_functions.datastore.datastore import store_time, fetch_times
+from general_functions.datastore.datastore import *
 
 # General variables to be used across all pages
 site_components = ['Home', 'Blog', 'About']
@@ -19,17 +18,12 @@ site_components = ['Home', 'Blog', 'About']
 @app.route('/')
 def home():
     text = 'The home page will contain initiatives, links to the blog, coding progress, etc.'
-    
-    #below code is just to connect to datastore as POC
-    store_time(datetime.datetime.now())
-    times = fetch_times(10)
-
-    return render_template('home.html', text = text, site_components = site_components, times=times)
+    return render_template('home.html', text = text, site_components = site_components)
 
 @app.route('/blog/')
 def blog():
     text = "The place where I will record my development progress and write down my thoughts"
-    posts = Post.query.order_by(Post.date_posted.desc()).all()
+    posts = blog_list()
     return render_template('blog.html', text = text, site_components = site_components, posts=posts)
 
 @app.route('/about/')
@@ -60,19 +54,13 @@ def logout():
     return redirect(url_for('blog'))
 
 @app.route('/admin/', methods=['GET', 'POST'])
-@login_required
+#@login_required
 def admin_page():
     form = PostEdit()
     if form.validate_on_submit():
-        post = Post(
-            title=form.post_title.data,
-            subtitle=form.post_subtitle.data,
-            author=form.author.data,
-            post_tags=form.tags,
-            content=form.content.data)
-        db.session.add(post)
-        db.session.commit()
         flash('Post titled "{}" has been created'.format(form.post_title.data))
+        data = request.form.to_dict(flat=True)
+        update(data)
         return redirect(url_for('blog'))
     return render_template('admin.html', form=form)
 

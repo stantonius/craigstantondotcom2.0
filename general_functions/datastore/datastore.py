@@ -4,7 +4,7 @@ import config
 builtin_list = list
 
 def get_client():
-    return datastore.Client('craigstanton2')
+    return datastore.Client('craigstanton2', namespace='base-db')
 
 def from_datastore(entity):
     """Translates Datastore results into the format expected by the
@@ -25,18 +25,13 @@ def from_datastore(entity):
     return entity
 
 
-def update(data, id=None):
+def update(data):
     ds = get_client()
-    if id:
-        key = ds.key('Book', int(id))
-    else:
-        key = ds.key('Book')
+    
+    # Can use the key'5717023518621696'
+    key = ds.key('blogbase')
 
-
-
-    entity = datastore.Entity(
-        key=key,
-        exclude_from_indexes=['description'])
+    entity = datastore.Entity(key=key)
 
     entity.update(data)
     ds.put(entity)
@@ -44,6 +39,7 @@ def update(data, id=None):
 
 
 
+datastore_client = datastore.Client()
 
 def store_time(dt):
     entity = datastore.Entity(key=datastore_client.key('visit'))
@@ -61,3 +57,8 @@ def fetch_times(limit):
     times = query.fetch(limit=limit)
 
     return times
+
+def blog_list():
+    ds = get_client()
+    query = ds.query(kind='blogbase')
+    return query.fetch()
