@@ -1,6 +1,22 @@
 {% extends "base.html" %}
+  
 
 {% block page_content %}
+<div class="ui fixed menu">
+  {% for component in site_components %}
+  <div class="active item">
+    <a href="{{ url_for(component.lower()) }}">{{ component }}</a>
+  </div>
+  {% endfor %}
+  <div class="ui right menu"></div>
+    <div class="ui transparent left icon input">
+      <input type="text" placeholder="Search" />
+      <i class="search icon"></i>
+    </div>
+      <a href="{{ url_for('logout') }}" class="item">Logout</a>
+    <div class="item">Register</div>
+</div>
+<br>
 
   <br>
   <div class="ui container">

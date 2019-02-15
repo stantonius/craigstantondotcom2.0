@@ -6,7 +6,7 @@ from config import Config
 from flask_blogging import BloggingEngine, SQLAStorage
 #from models import Post, Tags, Admin
 from forms import PostEdit, LoginForm
-from mysite import app, db
+from mysite import app, oauth2
 from flask_login import login_user, login_required, current_user, logout_user
 from werkzeug.urls import url_parse
 
@@ -15,10 +15,12 @@ from general_functions.datastore.datastore import *
 # General variables to be used across all pages
 site_components = ['Home', 'Blog', 'About']
 
+
 @app.route('/')
 def home():
     text = 'The home page will contain initiatives, links to the blog, coding progress, etc.'
-    return render_template('home.html', text = text, site_components = site_components)
+    check = oauth2.email
+    return render_template('home.html', text = text, site_components = site_components, check = check)
 
 @app.route('/blog/')
 def blog():
@@ -33,8 +35,10 @@ def about():
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
-    if current_user.is_authenticated:
+    """
+    if oauth2.email == 'craig.stanton2@gmail.com':
         return redirect(url_for('admin_page'))
+    
     form = LoginForm()
     if form.validate_on_submit():
         user = Admin.query.filter_by(username=form.username.data).first()
@@ -45,24 +49,31 @@ def login():
         next_page = request.args.get('next')
         if not next_page or url_parse(next_page).netloc != "":
             next_page = url_for('admin_page')
-        return redirect(next_page)
-    return render_template('login.html', title='Sign In', form=form)
+    """
+    next_page = url_for('admin_page')
+    return redirect(next_page)
+    #return render_template('login.html', title='Sign In', form=form)
 
 @app.route('/logout')
 def logout():
-    logout_user()
-    return redirect(url_for('blog'))
+    oauth2.storage.delete()
+    return redirect(url_for('home'))
 
 @app.route('/admin/', methods=['GET', 'POST'])
-#@login_required
+@oauth2.required
 def admin_page():
-    form = PostEdit()
-    if form.validate_on_submit():
-        flash('Post titled "{}" has been created'.format(form.post_title.data))
-        data = request.form.to_dict(flat=True)
-        update(data)
-        return redirect(url_for('blog'))
-    return render_template('admin.html', form=form)
+    if oauth2.email == 'craig.stanton2@gmail.com':
+        hasauth = oauth2.has_credentials()
+        form = PostEdit()
+        if form.validate_on_submit():
+            flash('Post titled "{}" has been created'.format(form.post_title.data))
+            data = request.form.to_dict(flat=True)
+            update(data)
+            return redirect(url_for('blog'))
+    else:
+        #flash('Invalid username or password')
+        return redirect(url_for('login'))
+    return render_template('admin.html', form=form, hasauth=hasauth)
 
 
 if __name__ == '__main__':

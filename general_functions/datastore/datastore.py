@@ -1,10 +1,16 @@
 from google.cloud import datastore
 import config
+import socket
 
 builtin_list = list
 
+
 def get_client():
-    return datastore.Client('craigstanton2', namespace='base-db')
+    if socket.gethostname() == 'Chizzler':
+        db = datastore.Client('craigstanton2', namespace='base-db')
+    else:
+        db = datastore.Client('craigstanton2', namespace='prod-db')
+    return db
 
 def from_datastore(entity):
     """Translates Datastore results into the format expected by the
@@ -37,7 +43,15 @@ def update(data):
     ds.put(entity)
     return from_datastore(entity)
 
+def blog_list():
+    ds = get_client()
+    query = ds.query(kind='blogbase')
+    return query.fetch()
 
+
+
+
+#TODO: remove this code below once sure it doesnt add any more value
 
 datastore_client = datastore.Client()
 
@@ -58,7 +72,4 @@ def fetch_times(limit):
 
     return times
 
-def blog_list():
-    ds = get_client()
-    query = ds.query(kind='blogbase')
-    return query.fetch()
+
