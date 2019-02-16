@@ -1,8 +1,12 @@
 import os, json
+from google.cloud import storage
 basedir = os.path.abspath(os.path.dirname(__file__))
 
-with open('app.json') as f:
-    data = json.load(f)
+client = storage.Client()
+bucket = client.get_bucket('craigstanton2.appspot.com')
+creds = bucket.get_blob('creds.json').download_as_string()
+data = json.loads(creds)
+
 
 class Config(object):
     DEBUG = True
