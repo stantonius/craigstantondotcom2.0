@@ -1,7 +1,0 @@
-indexes:
-
-- Kind: blogbase
-# here is where you can put the propeties (fields) needed for advanced/complex queries
-  properties:
-  - name: date_posted
-  - name: post_title
