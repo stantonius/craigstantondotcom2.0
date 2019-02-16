@@ -1,5 +1,5 @@
 # craigstantondotcom2.0
-Craig's new and improved website, this time on 
+Craig's new and improved website, this time using Flask on GCP
 
 ### This website was build for two purposes:
 
