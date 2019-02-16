@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, BooleanField, SubmitField, TextAreaField, DateTimeField, SelectMultipleField
+from wtforms import StringField, PasswordField, BooleanField, SubmitField, TextAreaField, DateTimeField, SelectMultipleField, FileField
 from wtforms.ext.sqlalchemy.orm import QuerySelectMultipleField
 from wtforms.validators import DataRequired
 import datetime
@@ -15,6 +15,7 @@ class PostEdit(FlaskForm):
     post_tags = SelectMultipleField('Tags', choices=choices, validators=[DataRequired()])
     save_draft = BooleanField('Save as draft')
     submit = SubmitField('Post')
+    post_file = FileField('Post Markdown')
 
 class LoginForm(FlaskForm):
     username = StringField('Username', validators=[DataRequired()])

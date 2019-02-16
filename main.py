@@ -19,8 +19,8 @@ site_components = ['Home', 'Blog', 'About']
 @app.route('/')
 def home():
     text = 'The home page will contain initiatives, links to the blog, coding progress, etc.'
-    check = oauth2.email
-    return render_template('home.html', text = text, site_components = site_components, check = check)
+    #check = oauth2.email
+    return render_template('home.html', text = text, site_components = site_components)
 
 @app.route('/blog/')
 def blog():
