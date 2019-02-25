@@ -12,8 +12,6 @@ class Config(object):
     DEBUG = True
     TESTING = True
     CSRF_ENABLED = True
-    SECRET_KEY = 'this-really-needs-to-be-changed'
-    SQLALCHEMY_DATABASE_URI = 'postgresql://Craig:Spurs2018!@localhost/craigstanton2.0'
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     GOOGLE_OAUTH2_CLIENT_ID = \
     data['gae_oauth2']['client_id']
