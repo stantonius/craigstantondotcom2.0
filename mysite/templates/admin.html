@@ -23,18 +23,20 @@
 
     <div class="ui centered grid">
 
-      <form action="" method="post" novalidate>
+      <form action="" method="post" novalidate  enctype="multipart/form-data">
         {{ form.hidden_tag() }}
         <br>
         <br>
         <br>
-        <p>
-            {{ form.post_title.label }}<br>
+        <div class="row">
+          {{ form.post_title.label }}<br>
+          <div class="ui input">  
             {{ form.post_title(size=32) }}
             {% for error in form.post_title.errors %}
             <span style="color: red;">[{{ error }}]
             {% endfor %}
-        </p>
+          </div>
+        </div>
         <p>
             {{ form.post_subtitle.label }}<br>
             {{ form.post_subtitle(size=32) }}
@@ -50,8 +52,6 @@
             {% endfor %}
         </p>
 
-
-
           <p>
               {{ form.post_tags }}
               {% for error in form.post_tags.errors %}
@@ -61,10 +61,15 @@
 
         <p>
             {{ form.content.label }}<br>
-            {{ form.content(size=32) }}
+            {{ form.content(cols="100", rows="20")|safe }}
             {% for error in form.content.errors %}
             <span style="color: red;">[{{ error }}]
             {% endfor %}
+        </p>
+
+        <p>
+          <button class="ui toggle button">{{ form.post_file }}</button>
+
         </p>
 
         <p>{{ form.date_posted() }}</p>      

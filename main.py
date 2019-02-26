@@ -1,4 +1,4 @@
-from flask import Flask, render_template, flash, redirect, url_for, request
+from flask import Flask, render_template, flash, redirect, url_for, request, Response, Markup
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 import os, datetime
@@ -10,17 +10,16 @@ from mysite import app, oauth2
 from flask_login import login_user, login_required, current_user, logout_user
 from werkzeug.urls import url_parse
 
+
 from general_functions.datastore.datastore import *
 
 # General variables to be used across all pages
 site_components = ['Home', 'Blog', 'About']
 
-
 @app.route('/')
 def home():
     text = 'The home page will contain initiatives, links to the blog, coding progress, etc.'
-    check = oauth2.email
-    return render_template('home.html', text = text, site_components = site_components, check = check)
+    return render_template('home.html', text = text, site_components = site_components)
 
 @app.route('/blog/')
 def blog():
@@ -66,14 +65,27 @@ def admin_page():
         hasauth = oauth2.has_credentials()
         form = PostEdit()
         if form.validate_on_submit():
-            flash('Post titled "{}" has been created'.format(form.post_title.data))
+            #way to get date posted to merge with file
+            print(request.form['date_posted'])
+            
             data = request.form.to_dict(flat=True)
+            data['post_filename'] = request.form['date_posted'].replace(" ", "-").replace(":", "-") + "_" + request.files['post_file'].filename
             update(data)
+            file_upload(request.files['post_file'], request.form['date_posted'])
+
+            #if request.files['post_file']:
+
             return redirect(url_for('blog'))
     else:
         #flash('Invalid username or password')
-        return redirect(url_for('login'))
+        return redirect(url_for('blog'))
     return render_template('admin.html', form=form, hasauth=hasauth)
+
+
+@app.route('/blog/<post_filename>')
+def display_blog_post(post_filename):
+    blog_detail = get_file(post_filename)
+    return render_template('blog_detail.html', blog_detail = blog_detail, site_components = site_components)
 
 
 if __name__ == '__main__':

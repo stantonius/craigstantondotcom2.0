@@ -1,6 +1,41 @@
 from google.cloud import datastore
 import config
 import socket
+import mistune
+
+from google.cloud import storage
+from google.cloud.storage import Blob
+from werkzeug.utils import secure_filename
+
+client = storage.Client()
+
+def get_storage():  
+    if socket.gethostname() == 'Chizzler':
+        bucket = client.get_bucket('blogdocs')
+    else:
+        bucket = client.get_bucket('prod-blogdocs')
+    return bucket
+
+
+ALLOWED_EXTENSIONS = set(['txt', 'pdf', 'png', 'jpg', 'jpeg', 'md'])
+
+def allowed_file(filename):
+    return '.' in filename and \
+           filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+
+def file_upload(file, request_date):
+    if file and allowed_file(file.filename):
+        new_file_name = request_date.replace(" ", "-").replace(":", "-") + "_" + file.filename
+        safename = secure_filename(new_file_name)
+        blob = Blob(safename, get_storage())
+        blob.upload_from_file(file)
+    print('File uploaded successfully')
+
+
+def get_file(post_filename):
+    blob = Blob(post_filename, get_storage())
+    blog_as_text = blob.download_as_string().decode()
+    return mistune.markdown(blog_as_text, escape=True, hard_wrap=True)
 
 builtin_list = list
 
@@ -46,7 +81,16 @@ def update(data):
 def blog_list():
     ds = get_client()
     query = ds.query(kind='blogbase')
+    query.order = ['-date_posted']
+    
+    for items in query.fetch():
+        if items['post_filename']:
+            print(items['post_filename'])
+
     return query.fetch()
+
+
+
 
 
 

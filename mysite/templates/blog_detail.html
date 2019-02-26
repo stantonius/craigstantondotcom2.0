@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+
+{% block page_content %}
+
+  <br>
+  <div class="ui container">
+    <div class="ui centered grid">
+
+      <div class="row">
+        <div class="column">
+          <img class="ui centered huge rounded image" src="{{ url_for('static', filename='img/NZ.jpg') }}">
+        </div>
+      </div>
+
+
+
+      <div class="row" >
+          <div class="ui left aligned text container">
+            {{ blog_detail | safe}}
+          </div>
+      </div>
+
+     
+      <div class="row">
+        <div class="ui content container">
+          <a href="https://github.com/canadarmy" target="_blank">
+            <i class="github big link black icon"></i>
+          </a>
+          <a href="https://www.linkedin.com/in/craig-stanton-a5132a42/" target="_blank">
+            <i class="linkedin big link black icon"></i>
+          </a>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+<!--
+  </div>
+-->
+{% endblock %}
