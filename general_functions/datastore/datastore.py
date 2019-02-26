@@ -82,10 +82,6 @@ def blog_list():
     ds = get_client()
     query = ds.query(kind='blogbase')
     query.order = ['-date_posted']
-    
-    for items in query.fetch():
-        if items['post_filename']:
-            print(items['post_filename'])
 
     return query.fetch()
 
