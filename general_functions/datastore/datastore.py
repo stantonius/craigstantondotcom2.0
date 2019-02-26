@@ -1,14 +1,21 @@
 from google.cloud import datastore
 import config
 import socket
-import markdown
+import mistune
 
 from google.cloud import storage
 from google.cloud.storage import Blob
 from werkzeug.utils import secure_filename
 
 client = storage.Client()
-bucket = client.get_bucket('blogdocs')
+
+def get_storage():  
+    if socket.gethostname() == 'Chizzler':
+        bucket = client.get_bucket('blogdocs')
+    else:
+        bucket = client.get_bucket('prod-blogdocs')
+    return bucket
+
 
 ALLOWED_EXTENSIONS = set(['txt', 'pdf', 'png', 'jpg', 'jpeg', 'md'])
 
@@ -20,15 +27,15 @@ def file_upload(file, request_date):
     if file and allowed_file(file.filename):
         new_file_name = request_date.replace(" ", "-").replace(":", "-") + "_" + file.filename
         safename = secure_filename(new_file_name)
-        blob = Blob(safename, bucket)
+        blob = Blob(safename, get_storage())
         blob.upload_from_file(file)
     print('File uploaded successfully')
 
 
 def get_file(post_filename):
-    blob = Blob(post_filename, bucket)
-    blog_as_text = blob.download_as_string()
-    return markdown.markdown(blog_as_text)
+    blob = Blob(post_filename, get_storage())
+    blog_as_text = blob.download_as_string().decode()
+    return mistune.markdown(blog_as_text, escape=True, hard_wrap=True)
 
 builtin_list = list
 

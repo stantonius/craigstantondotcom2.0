@@ -1,4 +1,4 @@
-from flask import Flask, render_template, flash, redirect, url_for, request, Response, render_template_string
+from flask import Flask, render_template, flash, redirect, url_for, request, Response, Markup
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 import os, datetime
@@ -84,8 +84,8 @@ def admin_page():
 
 @app.route('/blog/<post_filename>')
 def display_blog_post(post_filename):
-    blog_detail = render_template_string(get_file(post_filename))
-    return render_template('blog_detail.html', blog_detail = blog_detail)
+    blog_detail = get_file(post_filename)
+    return render_template('blog_detail.html', blog_detail = blog_detail, site_components = site_components)
 
 
 if __name__ == '__main__':
