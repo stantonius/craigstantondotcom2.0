@@ -69,11 +69,11 @@ def admin_page():
             print(request.form['date_posted'])
             
             data = request.form.to_dict(flat=True)
-            data['post_filename'] = request.form['date_posted'].replace(" ", "-").replace(":", "-") + "_" + request.files['post_file'].filename
+            if request.files:
+                data['post_filename'] = request.form['date_posted'].replace(" ", "-").replace(":", "-") + "_" + request.files['post_file'].filename
+                file_upload(request.files['post_file'], request.form['date_posted'])
+            
             update(data)
-            file_upload(request.files['post_file'], request.form['date_posted'])
-
-            #if request.files['post_file']:
 
             return redirect(url_for('blog'))
     else:
