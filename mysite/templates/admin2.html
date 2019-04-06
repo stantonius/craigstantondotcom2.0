@@ -1,0 +1,85 @@
+{% extends "base.html" %}
+  
+
+{% block page_content %}
+<div class="ui fixed menu">
+  {% for component in site_components %}
+  <div class="active item">
+    <a href="{{ url_for(component.lower()) }}">{{ component }}</a>
+  </div>
+  {% endfor %}
+  <div class="ui right menu"></div>
+    <div class="ui transparent left icon input">
+      <input type="text" placeholder="Search" />
+      <i class="search icon"></i>
+    </div>
+      <a href="{{ url_for('logout') }}" class="item">Logout</a>
+    <div class="item">Register</div>
+</div>
+<br>
+
+  <br>
+  <div class="ui container">
+
+    <div class="ui centered grid">
+
+    {{ ckeditor.load() }}
+    {{ ckeditor.config(name='body') }}
+
+      <form action="" method="post" novalidate  enctype="multipart/form-data">
+        {{ form.hidden_tag() }}
+        {{ ckeditor.load() }}
+        <br>
+        <br>
+        <br>
+        <div class="row">
+          {{ form.post_title.label }}<br>
+          <div class="ui input">  
+            {{ form.post_title(size=32) }}
+            {% for error in form.post_title.errors %}
+            <span style="color: red;">[{{ error }}]
+            {% endfor %}
+          </div>
+        </div>
+        <p>
+            {{ form.post_subtitle.label }}<br>
+            {{ form.post_subtitle(size=32) }}
+            {% for error in form.post_subtitle.errors %}
+            <span style="color: red;">[{{ error }}]
+            {% endfor %}
+        </p>
+        <p>
+            {{ form.author.label }}<br>
+            {{ form.author(size=32) }}
+            {% for error in form.author.errors %}
+            <span style="color: red;">[{{ error }}]
+            {% endfor %}
+        </p>
+
+          <p>
+              {{ form.post_tags }}
+              {% for error in form.post_tags.errors %}
+              <span style="color: red;">[{{ error }}]
+              {% endfor %}
+          </p>
+
+        <p>
+            {{ form.content.label }}<br>
+            {{ form.content() }}
+        </p>
+
+        <p>
+          <button class="ui toggle button">{{ form.post_file }}</button>
+
+        </p>
+
+        <p>{{ form.date_posted() }}</p>      
+
+        <p>{{ form.save_draft() }} {{ form.save_draft.label }}</p>
+        <p>{{ form.submit() }}</p>
+      </form>
+
+    </div>
+  </div>
+
+{% endblock %}
