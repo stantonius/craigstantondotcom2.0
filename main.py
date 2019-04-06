@@ -79,7 +79,7 @@ def admin_page():
     else:
         #flash('Invalid username or password')
         return redirect(url_for('blog'))
-    return render_template('admin.html', form=form, hasauth=hasauth)
+    return render_template('admin2.html', form=form, hasauth=hasauth)
 
 
 @app.route('/blog/<post_filename>')
