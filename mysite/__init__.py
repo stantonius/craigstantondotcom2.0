@@ -3,6 +3,7 @@ from config import *
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_login import LoginManager
+from flask_admin import Admin
 import socket
 from flask_ckeditor import CKEditor
 
@@ -13,6 +14,7 @@ from oauth2client.contrib.flask_util import UserOAuth2
 app = Flask(__name__, static_folder='static')
 
 ckeditor = CKEditor(app)
+#admin = Admin(app, name='microblog', template_mode='bootstrap3')
 
 if socket.gethostname() == 'Chizzler':
         app.config.from_object(Config)

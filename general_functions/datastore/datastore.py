@@ -37,6 +37,12 @@ def get_file(post_filename):
     blog_as_text = blob.download_as_string().decode()
     return mistune.markdown(blog_as_text, escape=True, hard_wrap=True)
 
+
+def get_file_link(post_filename):
+    blob = Blob(post_filename, get_storage())
+    file = blob.download_to_file()
+    return file
+
 builtin_list = list
 
 
@@ -66,11 +72,12 @@ def from_datastore(entity):
     return entity
 
 
-def update(data):
+def update(data, id=None):
     ds = get_client()
-    
-    # Can use the key'5717023518621696'
-    key = ds.key('blogbase')
+    if id:
+        key = ds.key('blogbase', int(id))
+    else:
+        key = ds.key('blogbase')
 
     entity = datastore.Entity(key=key)
 
@@ -85,6 +92,11 @@ def blog_list():
 
     return query.fetch()
 
+def read(id):
+    ds = get_client()
+    key = ds.key('blogbase', int(id))
+    results = ds.get(key)
+    return from_datastore(results)
 
 
 
