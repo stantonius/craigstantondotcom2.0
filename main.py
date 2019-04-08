@@ -49,7 +49,7 @@ def login():
         if not next_page or url_parse(next_page).netloc != "":
             next_page = url_for('admin_page')
     """
-    next_page = url_for('admin_page')
+    next_page = url_for('admin_home')
     return redirect(next_page)
     #return render_template('login.html', title='Sign In', form=form)
 
@@ -58,9 +58,9 @@ def logout():
     oauth2.storage.delete()
     return redirect(url_for('home'))
 
-@app.route('/admin/', methods=['GET', 'POST'])
+@app.route('/admin/new_post/', methods=['GET', 'POST'])
 @oauth2.required
-def admin_page():
+def new_post():
     if oauth2.email == 'craig.stanton2@gmail.com':
         hasauth = oauth2.has_credentials()
         form = PostEdit()
@@ -79,7 +79,46 @@ def admin_page():
     else:
         #flash('Invalid username or password')
         return redirect(url_for('blog'))
-    return render_template('admin2.html', form=form, hasauth=hasauth)
+    return render_template('new_post.html', form=form, hasauth=hasauth)
+
+
+@app.route('/<id>/edit', methods=['GET', 'POST'])
+@oauth2.required
+def edit(id):
+    if oauth2.email == 'craig.stanton2@gmail.com':
+        post = read(id)
+        form = PostEdit()
+        form.post_title.data = post['post_title']
+        form.post_subtitle.data = post["post_subtitle"]
+        form.author.data = post["author"]
+        form.content.data = post["content"]
+        form.post_tags.data = post["post_tags"]
+           
+        if request.method == 'POST':
+            data = request.form.to_dict(flat=True)
+            if not request.files and "post_filename" in post:
+                data["post_filename"] = post["post_filename"]
+            elif request.files:
+                data['post_filename'] = request.form['date_posted'].replace(" ", "-").replace(":", "-") + "_" + request.files['post_file'].filename
+                file_upload(request.files['post_file'], request.form['date_posted'])
+            update(data, id)
+            return redirect(url_for('admin_home'))
+    else:
+        #flash('Invalid username or password')
+        return redirect(url_for('blog'))
+
+    return render_template("new_post.html", form=form)
+
+
+@app.route('/admin/', methods=['GET', 'POST'])
+@oauth2.required
+def admin_home():
+    if oauth2.email == 'craig.stanton2@gmail.com':
+        posts = blog_list()
+    else:
+        #flash('Invalid username or password')
+        return redirect(url_for('blog'))
+    return render_template('admin.html', site_components = site_components, posts=posts)
 
 
 @app.route('/blog/<post_filename>')
