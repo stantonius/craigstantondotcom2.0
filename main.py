@@ -2,19 +2,16 @@ from flask import Flask, render_template, flash, redirect, url_for, request, Res
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 import os, datetime
-from config import Config
-from flask_blogging import BloggingEngine, SQLAStorage
-#from models import Post, Tags, Admin
 from forms import PostEdit, LoginForm
 from mysite import app, oauth2
 from flask_login import login_user, login_required, current_user, logout_user
 from werkzeug.urls import url_parse
 
-
-from general_functions.datastore.datastore import *
+from util.datastore.datastore import *
 
 # General variables to be used across all pages
 site_components = ['Home', 'Blog', 'About']
+allowed_ids = ["craig.stanton2@gmail.com"]
 
 @app.route('/')
 def home():
@@ -34,24 +31,8 @@ def about():
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
-    """
-    if oauth2.email == 'craig.stanton2@gmail.com':
-        return redirect(url_for('admin_page'))
-    
-    form = LoginForm()
-    if form.validate_on_submit():
-        user = Admin.query.filter_by(username=form.username.data).first()
-        if user is None or not user.check_password(form.password.data):
-            flash('Invalid username or password')
-            return redirect(url_for('login'))
-        login_user(user, remember=form.remember_me.data)
-        next_page = request.args.get('next')
-        if not next_page or url_parse(next_page).netloc != "":
-            next_page = url_for('admin_page')
-    """
     next_page = url_for('admin_home')
     return redirect(next_page)
-    #return render_template('login.html', title='Sign In', form=form)
 
 @app.route('/logout')
 def logout():
@@ -61,7 +42,7 @@ def logout():
 @app.route('/admin/new_post/', methods=['GET', 'POST'])
 @oauth2.required
 def new_post():
-    if oauth2.email == 'craig.stanton2@gmail.com':
+    if oauth2.email in allowed_ids:
         hasauth = oauth2.has_credentials()
         form = PostEdit()
         if form.validate_on_submit():
@@ -69,6 +50,7 @@ def new_post():
             print(request.form['date_posted'])
             
             data = request.form.to_dict(flat=True)
+
             if request.files:
                 data['post_filename'] = request.form['date_posted'].replace(" ", "-").replace(":", "-") + "_" + request.files['post_file'].filename
                 file_upload(request.files['post_file'], request.form['date_posted'])
@@ -85,7 +67,7 @@ def new_post():
 @app.route('/<id>/edit', methods=['GET', 'POST'])
 @oauth2.required
 def edit(id):
-    if oauth2.email == 'craig.stanton2@gmail.com':
+    if oauth2.email in allowed_ids:
         post = read(id)
         form = PostEdit()
         form.post_title.data = post['post_title']
@@ -113,7 +95,7 @@ def edit(id):
 @app.route('/admin/', methods=['GET', 'POST'])
 @oauth2.required
 def admin_home():
-    if oauth2.email == 'craig.stanton2@gmail.com':
+    if oauth2.email in allowed_ids:
         posts = blog_list()
     else:
         #flash('Invalid username or password')

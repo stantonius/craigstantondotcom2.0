@@ -36,7 +36,7 @@
           </div>
         </div>
       </div>
-
+    
       <div class="ui grid">
         {% for post in posts %}
           <div class="row">
@@ -52,7 +52,7 @@
             <div class="four wide column" style="font-style: italic">{{ post.post_subtitle }}</div>
             <div class="four wide column"></div>
             <div class="four wide column" style="font-style: italic">{{ post.author }}</div>
-            <div class="four wide column" style="font-style: italic">{{ post.date_posted }}</div>
+            <div class="four wide column" style="font-style: italic">{{ post.date_posted | strftime }}</div>
           </div>
           <div class="row"></div>
           <div class="row">

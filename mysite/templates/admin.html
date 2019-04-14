@@ -36,7 +36,7 @@
   <div class="ui container">
 
     <div class="ui centered grid">
-          <table class="ui single line table">
+          <table class="ui tablet stackable table">
             <thead>
               <tr>
                 <th>Title</th>
@@ -65,7 +65,7 @@
                 <td>{{ post.content | safe}}</td>
                 <td>{{ post.date_posted }}</td>
                 <td>
-                    <a href="{{ url_for('edit', id=post.id) }}">{{ post.id }}</a>
+                    <a href="{{ url_for('edit', id=post.id) }}">Edit</a>
                 </td>
               </tr>
               {% endfor %}

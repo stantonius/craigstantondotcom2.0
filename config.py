@@ -17,6 +17,7 @@ class Config(object):
     data['gae_oauth2']['client_id']
     GOOGLE_OAUTH2_CLIENT_SECRET = data['gae_oauth2']['client_secret']
     SECRET_KEY = data['flask_general']['secret_key']
+    ALLOWED_IDS = ["craig.stanton2@gmail.com"]
 
 class ProductionConfig(Config):
     DEBUG = False
@@ -27,6 +28,7 @@ class ProductionConfig(Config):
     GOOGLE_OAUTH2_CLIENT_SECRET = data['gae_oauth2']['client_secret']
     SECRET_KEY = data['flask_general']['secret_key']
     PROJECT_ID = 'craigstanton2'
+    ALLOWED_IDS = ["craig.stanton2@gmail.com"]
 
 class StagingConfig(Config):
     DEVELOPMENT = True
