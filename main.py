@@ -34,7 +34,8 @@ def about():
 @app.route('/apps/')
 def apps():
     list_of_apps = ["traveller", "pygame"]
-    return render_template('apps.html', list_of_apps = list_of_apps, site_components = site_components)
+    text = "Series of experimental apps"
+    return render_template('apps.html', text = text, list_of_apps = list_of_apps, site_components = site_components)
 
 @app.route('/apps/traveller')
 def traveller():
