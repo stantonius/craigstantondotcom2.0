@@ -6,11 +6,13 @@ from forms import PostEdit, LoginForm
 from mysite import app, oauth2
 from flask_login import login_user, login_required, current_user, logout_user
 from werkzeug.urls import url_parse
+import folium
 
 from util.datastore.datastore import *
+from util.apps.traveller_map import *
 
 # General variables to be used across all pages
-site_components = ['Home', 'Blog', 'About']
+site_components = ['Home', 'Blog', 'About', 'Apps']
 allowed_ids = ["craig.stanton2@gmail.com"]
 
 @app.route('/')
@@ -28,6 +30,33 @@ def blog():
 def about():
     text = 'This website was eniterly written by me using Python. It is deployed on Google Cloud Platform.'
     return render_template('about.html', text = text, site_components = site_components)
+
+@app.route('/apps/')
+def apps():
+    list_of_apps = ["traveller", "pygame"]
+    return render_template('apps.html', list_of_apps = list_of_apps, site_components = site_components)
+
+@app.route('/apps/traveller')
+def traveller():
+    text = "These are all of the countries I have travelled to. The purpose of this was to deploy a simple app using Google Cloud Functions."
+    return render_template('traveller.html', text = text, site_components = site_components)
+
+@app.route('/apps/pygame')
+def pygame():
+    text = "In development. Plase come back soon!"
+    return render_template('pygame.html', text = text, site_components = site_components)
+
+#NOTE: Below is just used to render the map - it is not a dedicated webpage itself
+@app.route('/apps/map')
+def map():
+    text = mapper()
+    m = folium.Map(location=[41.0082, 20], zoom_start=1.5, min_zoom=2)
+    folium.Choropleth(geo_data=text,
+                      fill_color='red',
+                      fill_opacity=0.3,
+                      line_weight=2,
+                     ).add_to(m)
+    return m.get_root().render()
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():

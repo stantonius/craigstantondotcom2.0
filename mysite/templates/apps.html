@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block page_content %}
+
+<br>
+<br>
+<br>
+<br>
+<div class="ui container">
+    {% for app in list_of_apps %}
+        <h2 class="ui header">
+        <a href="{{ url_for(app) }}">{{ app | title }}</a>
+        </h2>
+    {% endfor %}
+</div>
+
+{% endblock %}
