@@ -28,7 +28,7 @@ def blog():
 
 @app.route('/about/')
 def about():
-    text = 'This website was eniterly written by me using Python. It is deployed on Google Cloud Platform.'
+    text = ""
     return render_template('about.html', text = text, site_components = site_components)
 
 @app.route('/apps/')
